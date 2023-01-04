@@ -1,17 +1,17 @@
 import styled from "styled-components";
-
+import { useAuth0 } from "@auth0/auth0-react";
 const Contact = () => {
   const Wrapper = styled.section`
     padding: 2rem 0 5rem 0;
     text-align: center;
-    .int{
+    .int {
       border-radius: 7px;
-      background-color:#333;
-      font-weight:600;
-      color:white;
+      background-color: #333;
+      font-weight: 600;
+      color: white;
       width: 8rem;
       height: 3rem;
-    }    
+    }
     .container {
       margin-top: 6rem;
 
@@ -39,7 +39,7 @@ const Contact = () => {
       }
     }
   `;
-
+  const { user, isAuthenticated } = useAuth0();
   return (
     <Wrapper>
       <h1 className="common-heading">Contact page</h1>
@@ -51,15 +51,20 @@ const Contact = () => {
         style={{ border: 0 }}
         allowFullScreen=""
         loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"></iframe>
+        referrerPolicy="no-referrer-when-downgrade"
+      ></iframe>
 
       <div className="container">
         <div className="contact-form">
           <form
-            action="https://formspree.io/f/xeqdgwnq"
+            action="https://formspree.io/f/xeqdwove"
             method="POST"
-            className="contact-inputs">
+            className="contact-inputs"
+          >
             <input
+            disabled
+              readonly
+              value={user.name}
               type="text"
               placeholder="username"
               name="username"
@@ -68,6 +73,9 @@ const Contact = () => {
             />
 
             <input
+            disabled
+              readonly
+              value={user.email}
               type="email"
               name="Email"
               placeholder="Email"
@@ -81,7 +89,8 @@ const Contact = () => {
               rows="10"
               required
               autoComplete="off"
-              placeholder="Enter you message"></textarea>
+              placeholder="Enter you message"
+            ></textarea>
 
             <input className="int" type="submit" value="SEND" />
           </form>
