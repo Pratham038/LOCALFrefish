@@ -39,7 +39,8 @@ const Contact = () => {
       }
     }
   `;
-  const { user, isAuthenticated } = useAuth0();
+
+  const { user , isAuthenticated} = useAuth0();
   return (
     <Wrapper>
       <h1 className="common-heading">Contact page</h1>
@@ -62,9 +63,8 @@ const Contact = () => {
             className="contact-inputs"
           >
             <input
-            disabled
-              readonly
-              value={user.name}
+
+              value={isAuthenticated?user.name:""}
               type="text"
               placeholder="username"
               name="username"
@@ -73,9 +73,8 @@ const Contact = () => {
             />
 
             <input
-            disabled
-              readonly
-              value={user.email}
+             value={isAuthenticated?user.email:"EMPTY"}
+              
               type="email"
               name="Email"
               placeholder="Email"
