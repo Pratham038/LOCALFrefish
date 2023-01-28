@@ -12,6 +12,7 @@ import Contact from './Pages/Contact'
 import ErrorPage from './Pages/ErrorPage';
 import Home from './Pages/Home';
 import SingleProduct from './Pages/SingleProduct';
+import Admin from './Pages/Admin';
 
 const App = () => {
   return (
@@ -21,7 +22,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/contact" element={<Admin />} />
           <Route path="/singleproduct/:id" element={<SingleProduct />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="*" element={<ErrorPage />} />

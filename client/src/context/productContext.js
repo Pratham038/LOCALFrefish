@@ -3,7 +3,8 @@ import reducer from "../reducer/productReducer";
 import axios from "axios";
 const AppContext = createContext();
 
-const API = "https://api.pujakaitem.com/api/products";
+//const API = "https://api.pujakaitem.com/api/products";
+const API = "http://localhost:4000/api/products";
 
 const initialState = {
   isLoading: false,
