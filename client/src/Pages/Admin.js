@@ -4,6 +4,7 @@ import { useState } from 'react';
 const Admin = () => {
     const [name, setName] = useState('');
     const [id, setId] = useState('');
+    const [image,setImage] = useState('');
     const [price, setPrice] = useState('');
     const [description, setDescription] = useState('');
     const [stock, setStock] = useState('');
@@ -16,7 +17,7 @@ const Admin = () => {
     const prductNewSubmit =async(e) => {
         e.preventDefault()
         
-        const product = {name,price,description,id,stock,category,featured}
+        const product = {name,image,price,description,id,stock,category,featured}
     
         const response = await fetch('api/products',{
             method:'POST',
@@ -37,6 +38,7 @@ const Admin = () => {
             setFeatured('')
             setStock('')
             setId('')
+            setImage('')
         setError(null)
 
             console.log('new product added',json);
@@ -104,7 +106,17 @@ const Admin = () => {
     onChange={(e)=>setCategory(e.target.value)}
     value={category}
     />
-<button onSubmit={prductNewSubmit}>Add Product</button>
+
+    
+<label>Product Image link:</label>
+
+<input 
+    type='text' 
+    onChange={(e)=>setImage(e.target.value)}
+    value={image}
+    />
+
+<button type='submit' onSubmit={prductNewSubmit}>Add Product</button>
 {error && <div className='error'>{error}</div>}
 
 </form>

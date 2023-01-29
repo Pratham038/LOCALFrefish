@@ -23,6 +23,7 @@ function SingleProduct() {
   useEffect(() => {
     getSingleProduct(`${API}?id=${id}`);
   }, []);
+  
   const {
     name,
     image,

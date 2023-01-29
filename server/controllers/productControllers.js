@@ -3,11 +3,12 @@ const Product = require("../models/ProductsModel");
 
 // create a new workout
 const createProduct = async(req,res) => {
-    const { id, name, price, description,stock, colors,category, featured } = req.body;
+    const { id, name, image,price, description,stock, colors,category, featured } = req.body;
 
     try {
       const product = await Product.create({
         id,
+        image,
         colors,
         stock,
         name,
