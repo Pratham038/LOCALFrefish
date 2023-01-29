@@ -3,12 +3,12 @@ const {getProducts,getProduct,createProduct} = require('../controllers/productCo
 const router = express.Router();
 
 //get all
-router.get("/", getProducts);
+router.get("/products", getProducts);
 
 //get single product
-router.get("/:id", getProduct);
+router.get("/products/:id", getProduct);
 
-//post image
+//post info of product
 router.post('/',createProduct);
 
 module.exports = router;

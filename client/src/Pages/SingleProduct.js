@@ -11,7 +11,8 @@ import { TbTruckDelivery, TbReplace } from "react-icons/tb";
 import Star from "../Components/Star";
 import AddToCart from "../Components/AddToCart";
 
-const API = "https://api.pujakaitem.com/api/products";
+//const API = "https://api.pujakaitem.com/api/products";
+const API = "http://localhost:4000/api/products";
 
 function SingleProduct() {
   const { getSingleProduct, singleProduct, isSingleLoading } =
@@ -21,7 +22,7 @@ function SingleProduct() {
   // console.log(id);
 
   useEffect(() => {
-    getSingleProduct(`${API}?id=${id}`);
+    getSingleProduct(`${API}/${id}`);
   }, []);
   
   const {
@@ -45,13 +46,13 @@ function SingleProduct() {
         <div className="img1">
           {/* product Images  */}
           <div className="product_images">
-            <MyImage imgs={image} />
+            {/* <MyImage imgs={image} /> */}
           </div>
         </div>
         {/* product dAta  */}
         <div className="info1">
           <h2>{name}</h2>
-          <Star stars={stars} reviews={reviews} />
+          {/* <Star stars={stars} reviews={reviews} /> */}
 
           <p className="product-data-price">
             MRP:
@@ -95,13 +96,13 @@ function SingleProduct() {
               ID : <span> {id} </span>
             </p> */}
             <p>
-              Brand :<span> {company} </span>
+              {/* Brand :<span> {company} </span> */}
             </p>
             <p>
               Category:<span> {category} </span>
             </p>
             <hr />
-            {stock > 0 && <AddToCart product={singleProduct} />}
+            {/* {stock > 0 && <AddToCart product={singleProduct} />} */}
           </div>
         </div>
       </div>

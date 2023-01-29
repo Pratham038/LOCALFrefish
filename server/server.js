@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 
 
 //routes
-app.use("/api/products", productRoutes);
+app.use("/api", productRoutes);
 
 
 //connect to db

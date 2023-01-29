@@ -32,13 +32,13 @@ const getProducts = async (req,res)=>{
 
 //get single product
 const getProduct = async(req,res) =>{
-  const {id} = req.params
+  // const {id} = req.params
 
-  if(!mongoose.Types.ObjectId.isValid(id)){
-      return res.status(404).json({error:'NO such PRODUCT'})
-  }
+  // if(!mongoose.Types.ObjectId.isValid({id:'id'})){
+  //     return res.status(404).json({error:'NO such PRODUCT'})
+  // }
 
-  const product = await Product.findById(id)
+  const product = await Product.findOne({id:req.params.id})
   if (!product){
       return res.status(404).json({error:'No such PRODUCT'})
   }
