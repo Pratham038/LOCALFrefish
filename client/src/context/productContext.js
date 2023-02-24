@@ -36,7 +36,7 @@ const getSingleProduct =async(url) =>{
   try {
     const res = await axios.get(url);
     const singleProduct = await res.data;
-    console.log(singleProduct);
+    // console.log(singleProduct);
     
     dispatch({type: "SET_SINGLE_PRODUCT",payload:singleProduct});
   } catch (error) {

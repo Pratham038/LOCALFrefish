@@ -1,14 +1,74 @@
 import styled from "styled-components";
-import { useCartContext } from "../context/cart_context"
+import { useCartContext } from "../context/cart_context";
 import CartItem from "../Components/CartItem";
-import {NavLink} from "react-router-dom";
-import FormatPrice from "../helpers/FormatPrice"
+import { NavLink } from "react-router-dom";
+import { Button } from "../Components/AddToCart";
+import FormatPrice from "../helpers/FormatPrice";
+import { useAuth0 } from "@auth0/auth0-react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 const Cart = () => {
-  const {cart, clearCart, total_price, shipping_fee} = useCartContext();
-  //console.log("🚀 ~ file: Cart.js ~ line 6 ~ Cart ~ cart", cart);
-  if (cart.length===0){
-    return <EmptyDiv> NO ITEMS IN CART</EmptyDiv>
+  const [address, setAddress] = useState("");
+  const navigate = useNavigate();
+  const { user, loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+  const { cart, total_item, clearCart, total_price, shipping_fee } =
+    useCartContext();
+
+  const notify = () => {
+    toast.success("Order Placed Successfully 💕", {
+      position: toast.POSITION.TOP_RIGHT,
+      className: "toast-message",
+    });
+    // setTimeout(() => {
+    //   navigate('/');
+    // }, 3000);
+  };
+
+  //  console.log(cart);
+
+  if (cart.length === 0) {
+    return <EmptyDiv> NO ITEMS IN CART</EmptyDiv>;
   }
+
+  const placeOrder = async () => {
+    try {
+      const orderData = {
+        username: user.name,
+        user_email: user.email,
+        cart: cart,
+        quantity: total_item,
+        shipping_fee: shipping_fee,
+        total_price: total_price,
+        address: address,
+      };
+
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!response.ok) {
+        alert("Invalid Address");
+      }
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        notify();
+        setTimeout(() => {
+          navigate("/");
+          clearCart();
+        }, 2000);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Wrapper>
       <div className="container">
@@ -26,14 +86,20 @@ const Cart = () => {
             return <CartItem key={curElem.id} {...curElem} />;
           })}
         </div>
-        <hr/>
+        <hr />
         <div className="cart-two-button">
           <NavLink to="/products">
-            <button>continue Shopping</button>
+            <Button>continue Shopping</Button>
           </NavLink>
-          <button onClick={clearCart}>
-            clear cart
-          </button>
+          <Button onClick={clearCart}>clear cart</Button>
+        </div>
+        <div className="address">
+          Enter Dilevery address :
+          <input
+            type="text"
+            onChange={(e) => setAddress(e.target.value)}
+            value={address}
+          />
         </div>
         {/* order total_amount */}
         <div className="order-total--amount">
@@ -57,20 +123,33 @@ const Cart = () => {
                 <FormatPrice price={shipping_fee + total_price} />
               </p>
             </div>
+            {isAuthenticated ? (
+              <div>
+                <Button variant="contained" onClick={placeOrder}>
+                  Place Order
+                </Button>
+                <ToastContainer />
+              </div>
+            ) : (
+              <div>
+                <h5>Login to Place Order </h5>
+                <br />
+                <Button onClick={() => loginWithRedirect()}>Login</Button>
+              </div>
+            )}
           </div>
         </div>
-        
       </div>
     </Wrapper>
   );
 };
 
 const EmptyDiv = styled.div`
-display:grid;
-place-items:center;
-height:50vh;
-background-color: #eaeaea;
-  h3{
+  display: grid;
+  place-items: center;
+  height: 50vh;
+  background-color: #eaeaea;
+  h3 {
     font-size: 4.3rem;
     text-transform: capitalize;
     font-weight: 300;
@@ -78,10 +157,14 @@ background-color: #eaeaea;
 `;
 const Wrapper = styled.section`
   padding: 1rem 0;
+
+  .toast-message {
+    background: darkblue;
+  }
   .grid {
-  display: grid;
-  gap: 9rem;
-}
+    display: grid;
+    gap: 9rem;
+  }
 
   .grid-four-column {
     grid-template-columns: repeat(4, 1fr);
@@ -143,7 +226,7 @@ const Wrapper = styled.section`
       display: flex;
       justify-content: flex-start;
       gap: 0.5rem;
-      
+
       .color-style {
         width: 1.3rem;
         height: 1.3rem;
@@ -215,11 +298,11 @@ const Wrapper = styled.section`
 
     div p:last-child {
       font-weight: bold;
-      color: aqua;
+      color: #333;
     }
   }
 
-  @media (max-width:984px) {
+  @media (max-width: 984px) {
     .grid-five-column {
       grid-template-columns: 1.5fr 1fr 0.5fr;
     }

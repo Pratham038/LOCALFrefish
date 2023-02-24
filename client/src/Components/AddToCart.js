@@ -7,10 +7,14 @@ import { useCartContext } from "../context/cart_context";
 
 const AddToCart = ({ product }) => {
   const { addToCart } = useCartContext();
-  const { id, colors, stock } = product;
+  const { id, stock, quantity } = product;
 
-  const [color, setColor] = useState(colors[0]);
   const [amount, setAmount] = useState(1);
+  const [quantitys, setQuantitys] = useState(quantity[0]);
+
+  const handleChange = event => {
+    setQuantitys(event.target.value);
+  };
 
   const setDecrease = () => {
     amount > 1 ? setAmount(amount - 1) : setAmount(0);
@@ -19,26 +23,21 @@ const AddToCart = ({ product }) => {
   const setIncrease = () => {
     amount < stock ? setAmount(amount + 1) : setAmount(stock);
   };
-
+// console.log(quantitys);
   return (
     <Wrapper>
-      <div className="colors">
+      <div className="out">
         <p>
-          Color:
-          {colors.map((curColor, index) => {
-            return (
-              <button
-                key={index}
-                style={{ backgroundColor: curColor }}
-                className={color === curColor ? "btnStyle active" : "btnStyle"}
-                onClick={() => setColor(curColor)}>
-                {color === curColor ? <FaCheck className="checkStyle" /> : null}
-              </button>
-            );
-          })}
+          Quantity:
+          <select onChange={handleChange}>
+            {quantity.map((index) => (
+              <option key={index} value={index}>
+                {index}
+              </option>
+            ))}
+          </select>
         </p>
       </div>
-
       {/* add to cart  */}
       <CartAmountToggle
         amount={amount}
@@ -46,7 +45,10 @@ const AddToCart = ({ product }) => {
         setIncrease={setIncrease}
       />
 
-      <NavLink to="/cart" onClick={() => addToCart(id, color, amount, product)}>
+      <NavLink
+        to="/cart"
+        onClick={() => addToCart(id, quantitys, amount, product)}
+      >
         <Button className="btn">Add To Cart</Button>
       </NavLink>
     </Wrapper>
@@ -54,17 +56,13 @@ const AddToCart = ({ product }) => {
 };
 
 const Wrapper = styled.section`
-display: flex;
-  .colors p {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-  }
+  display: flex;
+
   .btnStyle {
     width: 2rem;
     height: 2rem;
     background-color: #000;
-    border-radius: 50%;
+    border-radius: 7%;
     margin-left: 1rem;
     border: none;
     outline: none;
@@ -86,9 +84,8 @@ display: flex;
   }
 
   /* we can use it as a global one too  */
-
 `;
-const Button = styled.button`
+export const Button = styled.button`
   text-decoration: none;
   max-width: auto;
   background-color: rgb(98 84 243);
@@ -98,15 +95,16 @@ const Button = styled.button`
   text-transform: uppercase;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
   &:hover,
   &:active {
     font-weight: 700;
+    border-radius: 7px;
     box-shadow: 0 2rem 2rem 0 rgb(132 144 255 / 30%);
-    box-shadow:rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     transform: scale(0.96);
   }
   a {

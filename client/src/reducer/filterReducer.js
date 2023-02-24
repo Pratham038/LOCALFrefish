@@ -103,7 +103,7 @@ const filterReducer = (state, action) => {
 
       if (color !== "all") {
         tempFilterProduct = tempFilterProduct.filter((curElem) =>
-          curElem.colors.includes(color)
+          curElem.quantity.includes(color)
         );
       }
 

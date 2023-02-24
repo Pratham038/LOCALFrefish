@@ -35,6 +35,9 @@ const Navbar = () => {
                   <Link className="nav-link" to="/profile">
                   Profile
                 </Link>
+                <Link className="nav-link" to="/userorders">
+                  Orders
+                </Link>
           <li className="nav-link">
             <button
               onClick={() => logout({ returnTo: window.location.origin })}

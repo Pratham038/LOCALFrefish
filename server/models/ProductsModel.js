@@ -18,11 +18,21 @@ const productSchema = new Schema(
       required: true,
     },
     
+    quantity: [String],
+
     image: {
       type: String,
       required: true,
     },
     price: {
+      type: Number,
+      required: true,
+    },
+    reviews:{
+      type: Number,
+      required: true,
+    },
+    stars:{
       type: Number,
       required: true,
     },

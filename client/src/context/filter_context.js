@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, useEffect } from "react";
-import { useProductContext } from "./productContext"
+import { useProductContext } from "./productContext";
 import reducer from "../reducer/filterReducer";
 
 const FilterContext = createContext();
@@ -74,7 +74,8 @@ export const FilterContextProvider = ({ children }) => {
         sorting,
         updateFilterValue,
         clearFilters,
-      }}>
+      }}
+    >
       {children}
     </FilterContext.Provider>
   );

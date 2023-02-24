@@ -5,26 +5,30 @@ const CartContext = createContext();
 
 const getLocalCartData = () => {
   let localCartData = localStorage.getItem("thapaCart");
-  if (localCartData === []) {
-    return [];
-  } else {
-    return JSON.parse(localCartData);
-  }
+  // if (localCartData === []) {
+  //   return [];
+  // } else {
+  //   return JSON.parse(localCartData);
+  // }
+  const parsedData = JSON.parse(localCartData);
+  if (!Array.isArray(parsedData)) return [];
+
+  return parsedData;
 };
 
 const initialState = {
-  cart:[],
-  
+  //cart:[],
+  cart: getLocalCartData(),
   total_item: "",
   total_price: "",
-  shipping_fee: 50000,
+  shipping_fee: 5000,
 };
 
 const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const addToCart = (id, color, amount, product) => {
-    dispatch({ type: "ADD_TO_CART", payload: { id, color, amount, product } });
+  const addToCart = (id, quantitys, amount, product) => {
+    dispatch({ type: "ADD_TO_CART", payload: { id, quantitys, amount, product } });
   };
 
   const removeItem = (id) => {

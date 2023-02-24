@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 
 const FooterContainer = styled.footer`
   background-color: #333;
@@ -74,6 +75,10 @@ const Footer = () => {
         <div className="copyright">
           &copy; {new Date().getFullYear()} Example Licious. All rights
           reserved.
+          <br/>
+          <Link to="/adminLoginPage">
+          admin
+        </Link>
         </div>
       </div>
       </footer>

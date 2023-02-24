@@ -1,128 +1,230 @@
-import React from 'react'
-import { useState } from 'react';
+import React from "react";
+import { useState, useEffect } from "react";
+import ProductDetails from "../Components/ProductDetails";
+import styled from "styled-components";
+import { NavLink } from "react-router-dom";
+import { Button } from "../Components/AddToCart";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
+import AdminNavbar from '../Components/AdminNavbar'
 
 const Admin = () => {
-    const [name, setName] = useState('');
-    const [id, setId] = useState('');
-    const [image,setImage] = useState('');
-    const [price, setPrice] = useState('');
-    const [description, setDescription] = useState('');
-    const [stock, setStock] = useState('');
-    const [category,setCategory ] = useState('');
-    const [featured, setFeatured] = useState('');
-    const [error,setError]=useState(null)
+  const [name, setName] = useState("");
+  const [id, setId] = useState("");
+  const [image, setImage] = useState("");
+  const [price, setPrice] = useState("");
+  const [reviews, setReviews] = useState("");
+  const [stars, setStars] = useState("");
+  const [description, setDescription] = useState("");
+  const [stock, setStock] = useState("");
+  const [category, setCategory] = useState("");
+  const [featured, setFeatured] = useState("");
+  const [error, setError] = useState(null);
+  const [quantity, setQuantity] = useState([]);
 
-    
+  //fetcch
+  const [products, setProducts] = useState(null);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await fetch("/api/products");
+      const json = await response.json();
 
-    const prductNewSubmit =async(e) => {
-        e.preventDefault()
-        
-        const product = {name,image,price,description,id,stock,category,featured}
-    
-        const response = await fetch('api/products',{
-            method:'POST',
-            body:JSON.stringify(product),
-            headers:{
-                'Content-Type':'application/json'
-            }
-        })
-        const json = await response.json()
-        if(!response.ok){
-            setError(json.error)
-        }
-        if(response.ok){
-            setName('')
-            setPrice('')
-            setDescription('')
-            setCategory('')
-            setFeatured('')
-            setStock('')
-            setId('')
-            setImage('')
-        setError(null)
+      if (response.ok) {
+        setProducts(json);
+      }
+    };
 
-            console.log('new product added',json);
-            
-        }
+    fetchProducts();
+  }, []);
+
+  const prductNewSubmit = async (e) => {
+    e.preventDefault();
+    const product = {
+      name,
+      image,
+      quantity,
+      price,
+      description,
+      id,
+      stock,
+      reviews,
+      stars,
+      category,
+      featured,
+    };
+
+    const response = await fetch("api/products", {
+      method: "POST",
+      body: JSON.stringify(product),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+    if (!response.ok) {
+      setError(json.error);
     }
-    
-    return (
+    if (response.ok) {
+      setName("");
+      setPrice("");
+      setDescription("");
+      setCategory("");
+      setFeatured("");
+      setStock("");
+      setId("");
+      setReviews("");
+      setStars("");
+      setImage("");
+      setError(null);
+      // console.log("new product added", json);
+      toast.success("Product Added💕",{
+        position: toast.POSITION.TOP_RIGHT,
+        className: 'toast-message'
+      })
+    }
+    if (!response.ok){
+      toast.error("Product not Added",{
+        position: toast.POSITION.TOP_RIGHT,
+        className: 'toast-message'
+      })
+    }
+  };
+  const handleColorsChange = (event) => {
+    setQuantity(event.target.value.split(","));
+  };
+
+  return (
     <>
-<form  onSubmit={prductNewSubmit}>
-<h3>ADD A new Product</h3>
+    <AdminNavbar/>
+      <Wrapper>
+        <Seperateproduct>
+          <form onSubmit={prductNewSubmit}>
+            <h3>ADD A new Product</h3>
 
-<label>Product ID :</label>
-    
-    <input 
-    type='text' 
-    onChange={(e)=>setId(e.target.value)}
-    value={id}
-    />
+            <input
+            placeholder="Product ID"
+              type="text"
+              onChange={(e) => setId(e.target.value)}
+              value={id}
+            />
 
-<label>Product Name :</label>
-    
-    <input 
-    type='text' 
-    onChange={(e)=>setName(e.target.value)}
-    value={name}
-    />
+            <input
+            placeholder="Product Name"
+              type="text"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+            />
 
-<label>Product Price :</label>
-<h6>value will be /100 .</h6>
-    <input 
-    type="number" 
-    onChange={(e)=>setPrice(e.target.value)}
-    value={price}
-    />
+            <input
+            placeholder="Product Price"
+              type="number"
+              onChange={(e) => setPrice(e.target.value)}
+              value={price}
+            />
 
-<label>Product Description :</label>
-    <input 
-    type='text' 
-    onChange={(e)=>setDescription(e.target.value)}
-    value={description}
-    />
+            <input
+            placeholder="Product Description"
+              type="text"
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+            />
 
-<label>Product stock :</label>
-    <input 
-    type='number' 
-    onChange={(e)=>setStock(e.target.value)}
-    value={stock}
-    />
+            <input
+            placeholder="Product stock"
+              type="number"
+              onChange={(e) => setStock(e.target.value)}
+              value={stock}
+            />
 
-<label>Product Advertise ? :</label>
-<h6>true ki false</h6>
+            <input
+            placeholder="Product Reviews"
+              type="number"
+              onChange={(e) => setReviews(e.target.value)}
+              value={reviews}
+            />
 
-    <input 
-    type='text' 
-    onChange={(e)=>setFeatured(e.target.value)}
-    value={featured}
-    />
+            <input
+            placeholder="Product stars"
+              type="number"
+              onChange={(e) => setStars(e.target.value)}
+              value={stars}
+            />
 
+            <input
+            placeholder="Product Advertised ? "
+              type="text"
+              onChange={(e) => setFeatured(e.target.value)}
+              value={featured}
+            />
 
-<label>Product category :</label>
+            <input
+            placeholder="Product category"
+              type="text"
+              onChange={(e) => setCategory(e.target.value)}
+              value={category}
+            />
 
-<input 
-    type='text' 
-    onChange={(e)=>setCategory(e.target.value)}
-    value={category}
-    />
+            <input
+            placeholder="Product Image link"
+              type="text"
+              onChange={(e) => setImage(e.target.value)}
+              value={image}
+            />
 
-    
-<label>Product Image link:</label>
+            {/* TRY0 */}
+            <div>
+              <input
+              placeholder="Size"
+                type="text"
+                id="quantity"
+                name="quantity"
+                value={quantity.join(",")}
+                onChange={handleColorsChange}
+              />
+            </div>
 
-<input 
-    type='text' 
-    onChange={(e)=>setImage(e.target.value)}
-    value={image}
-    />
-
-<button type='submit' onSubmit={prductNewSubmit}>Add Product</button>
-{error && <div className='error'>{error}</div>}
-
-</form>
-    
+            <Button type="submit" onSubmit={prductNewSubmit}>
+              Add Product
+            </Button>
+            {error && <div className="error">{error}</div>}
+          </form>
+        </Seperateproduct>
+        <div className="products">
+          {products &&
+            products.map((product) => (
+              <>
+                <NavLink to={`/editproduct/${product.id}`}>
+                  <ProductDetails key={product._id} product={product} />
+                </NavLink>
+              </>
+            ))}
+        </div>
+      </Wrapper>
     </>
-  )
-}
+  );
+};
 
-export default Admin
+export default Admin;
+
+const Wrapper = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row-reverse;
+
+  .products{
+    width: 100%;
+  }
+  h3{
+    text-align:center;
+  }
+`;
+
+const Seperateproduct = styled.div`
+width: 30%;
+  background-color: aqua;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 7%;
+  height: 100%;
+
+`;

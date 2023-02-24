@@ -28,7 +28,6 @@ function SingleProduct() {
   const {
     name,
     image,
-    company,
     category,
     stock,
     stars,
@@ -46,13 +45,14 @@ function SingleProduct() {
         <div className="img1">
           {/* product Images  */}
           <div className="product_images">
+            <img src={image} alt={name} />
             {/* <MyImage imgs={image} /> */}
           </div>
         </div>
         {/* product dAta  */}
         <div className="info1">
           <h2>{name}</h2>
-          {/* <Star stars={stars} reviews={reviews} /> */}
+          <Star stars={stars} reviews={reviews} />
 
           <p className="product-data-price">
             MRP:
@@ -102,7 +102,7 @@ function SingleProduct() {
               Category:<span> {category} </span>
             </p>
             <hr />
-            {/* {stock > 0 && <AddToCart product={singleProduct} />} */}
+            {stock > 0 && <AddToCart product={singleProduct} />}
           </div>
         </div>
       </div>
@@ -114,15 +114,11 @@ const Container = styled.div`
   width: 100%;
 
   .info {
-
+    
     padding: 2rem 10rem;
     gap: 5rem;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .img1{
-    padding-top: 4rem;
   }
 
   .product-data {
@@ -182,7 +178,11 @@ const Container = styled.div`
       font-weight: 700;
       font-stretch: expanded;
     }
-  }  
+  } 
+  img{
+    width: 40rem;
+    height: 30rem;
+  } 
 `;
 
 export default SingleProduct;
